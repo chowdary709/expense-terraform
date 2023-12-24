@@ -11,3 +11,14 @@ module "vpc" {
   default_route_table_id = var.default_route_table_id
 }
 
+module "public-lb" {
+  source = "./modules/alb"
+  alb_sg_allow_cidr = ""
+  alb_type = ""
+  env = ""
+  internal = ""
+  subnets = ""
+  vpc_id = module.vpc.vpc_id
+}
+
+
