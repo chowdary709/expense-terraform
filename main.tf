@@ -34,7 +34,7 @@ module "private-id" {
 module "frontend" {
   source = "./modules/app"
   app_port = 80
-  component = frontend
+  component = "frontend"
   env = var.env
   instance_type = "t2.micro"
   vpc_cidr = var.vpc_cidr
