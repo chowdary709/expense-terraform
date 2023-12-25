@@ -12,17 +12,18 @@ module "vpc" {
 }
 
 module "public-lb" {
-  source = "./modules/alb"
+  source            = "./modules/alb"
   alb_sg_allow_cidr = "0.0.0.0/0"
-  alb_type = "public"
-  env = var.env
-  internal = false
-  subnets = module.vpc.public_subnets
-  vpc_id = module.vpc.vpc_id
+  alb_type          = "public"
+  env               = var.env
+  internal          = false
+  subnets           = module.vpc.public_subnets
+  vpc_id            = module.vpc.vpc_id
 }
+
 module "private-id" {
   source = "./modules/alb"
-  alb_sg_allow_cidr = "var.vpc.cidr"
+  alb_sg_allow_cidr = var.vpc_cidr
   alb_type          = "private"
   env               = var.env
   internal          = true
