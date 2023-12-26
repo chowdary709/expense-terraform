@@ -10,6 +10,13 @@ resource "aws_security_group" "security_group" {
     protocol    = "tcp"
     cidr_blocks = [var.vpc_cidr]
   }
+  ingress {
+    description = "ssh"
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = var.bastion_node_cidr
+  }
 
   egress {
     from_port   = 0
@@ -41,9 +48,6 @@ resource "aws_launch_template" "template" {
     }
   }
 }
-
-
-
 resource "aws_autoscaling_group" "asg" {
   name                = "${var.env}-${var.component}"
   desired_capacity    = 1
