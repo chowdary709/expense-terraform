@@ -10,11 +10,12 @@ resource "aws_security_group" "security_group" {
     protocol    = "tcp"
     cidr_blocks = [var.vpc_cidr]
   }
+
   ingress {
-    description = "ssh"
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = var.bastion_node_cidr
   }
 
@@ -30,24 +31,23 @@ resource "aws_security_group" "security_group" {
   }
 }
 
-
 resource "aws_launch_template" "template" {
   name                   = "${var.env}-${var.component}"
   image_id               = data.aws_ami.ami.id
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.security_group.id]
-  user_data = filebase64(templatefile("${path.module}/userdata.sh",
-    {
-      component = var.component
-    }))
+  user_data = base64encode(templatefile("${path.module}/userdata.sh", {
+    role_name = var.component
+  }))
 
   tag_specifications {
     resource_type = "instance"
-    tags          = {
+    tags = {
       Name = "${var.env}-${var.component}"
     }
   }
 }
+
 resource "aws_autoscaling_group" "asg" {
   name                = "${var.env}-${var.component}"
   desired_capacity    = 1
