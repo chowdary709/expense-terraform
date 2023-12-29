@@ -33,3 +33,4 @@ resource "aws_lb" "alb" {
     Environment = "${var.env}-${var.alb_type}"
   }
 }
+

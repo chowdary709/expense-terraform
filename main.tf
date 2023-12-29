@@ -54,3 +54,5 @@ module "backend" {
   subnets           = module.vpc.private_subnets
   bastion_node_cidr = var.bastion_node_cidr
 }
+
+
