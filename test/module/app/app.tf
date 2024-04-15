@@ -79,25 +79,23 @@ resource "aws_launch_template" "template" {
   }
 }
 
-resource "aws_autoscaling_group" "asg" {
-  name                = var.component
-  desired_capacity    = 1
-  max_size            = 1
-  min_size            = 1
-  vpc_zone_identifier = var.subnets
+# Define an AWS instance resource (single instance without autoscaling)
+resource "aws_instance" "single_instance" {
+  ami           = data.aws_ami.ami.id           # ID of the AMI for the instance
+  instance_type = var.instance_type             # Instance type for the instance
+  subnet_id     = var.subnet_id                 # Subnet ID for the instance (adjust according to your configuration)
 
-  launch_template {
-    id      = aws_launch_template.template.id
-    version = "$Latest"  # Use $Latest for the latest version of the launch template
+  # Associate the IAM instance profile with the instance
+  iam_instance_profile {
+    name = aws_iam_instance_profile.instance_profile.name
   }
 
-  tag {
-    key                 = "project"
-    propagate_at_launch = true
-    value               = "expense"
+  tags = {
+    Name = "${var.component}-instance"         # Tags for the instance (Name tag)
   }
 }
 
+# Define an AWS target group resource
 resource "aws_lb_target_group" "tg" {
   name                 = "${var.component}-tg" # Name of the target group
   port                 = var.app_port          # Port the target group listens on
