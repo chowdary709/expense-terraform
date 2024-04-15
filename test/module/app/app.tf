@@ -77,6 +77,16 @@ resource "aws_launch_template" "template" {
       Name = "${var.component}"               # Tags for the launched instances (Name tag)
     }
   }
+
+  // Spot instance options
+  instance_market_options {
+    market_type = "spot"
+    spot_options {
+      max_price             = "0" // No maximum price
+      instance_interruption_behavior = "stop"
+      spot_instance_type     = "persistent"
+    }
+  }
 }
 
 # Define an AWS instance resource (single instance without autoscaling)
