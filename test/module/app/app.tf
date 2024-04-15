@@ -116,25 +116,22 @@ resource "aws_launch_template" "template" {
   }
 }
 
-# Define an AWS autoscaling group resource
 resource "aws_autoscaling_group" "asg" {
-  name                = var.component        # Name of the autoscaling group
-  desired_capacity    = 1                    # Desired number of instances in the group
-  max_size            = 1                    # Maximum number of instances in the group (1 for now)
-  min_size            = 1                    # Minimum number of instances in the group
-  vpc_zone_identifier = var.subnets          # Subnets for the instances
+  name                = var.component
+  desired_capacity    = 1
+  max_size            = 1
+  min_size            = 1
+  vpc_zone_identifier = var.subnets
 
-  # Define launch template for the autoscaling group
   launch_template {
-    id      = aws_launch_template.template.id   # ID of the launch template to use
-    version = "latest"                          # Version of the launch template to use (latest)
+    id      = aws_launch_template.template.id
+    version = "$Latest"  # Use $Latest for the latest version of the launch template
   }
 
-  # Define tags for the autoscaling group instances
   tag {
-    key                 = "project"             # Tag key
-    propagate_at_launch = true                  # Whether to propagate the tag to instances
-    value               = "expense"             # Tag value
+    key                 = "project"
+    propagate_at_launch = true
+    value               = "expense"
   }
 }
 
