@@ -138,7 +138,6 @@ resource "aws_autoscaling_group" "asg" {
   }
 }
 
-# Define an AWS target group resource
 resource "aws_lb_target_group" "tg" {
   name                 = "${var.component}-tg" # Name of the target group
   port                 = var.app_port          # Port the target group listens on
@@ -153,4 +152,7 @@ resource "aws_lb_target_group" "tg" {
     interval            = 5                    # Interval between health checks
     unhealthy_threshold = 2                    # Number of consecutive failed health checks required
     port                = var.app_port         # Port the health check is performed on
-    path
+    path                = "/"                  # Path for the health check requests
+    timeout             = 3                    # Timeout for the health check requests
+  }
+}
