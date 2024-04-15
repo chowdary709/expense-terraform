@@ -83,8 +83,8 @@ resource "aws_launch_template" "template" {
     market_type = "spot"
     spot_options {
       max_price             = "0" // No maximum price
-      instance_interruption_behavior = "stop"
-      spot_instance_type     = "persistent"
+      instance_interruption_behavior = var.instance_interruption_behavior
+      spot_instance_type    = var.spot_instance_type
     }
   }
 }
