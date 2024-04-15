@@ -95,3 +95,39 @@ resource "aws_launch_template" "template" {
     }
   }
 }
+
+resource "aws_autoscaling_group" "asg" {
+  name                = var.component
+  desired_capacity       = 0
+  max_size               = 2
+  min_size               = 1
+  vpc_zone_identifier = var.subnets
+
+  launch_template {
+    id      = aws_launch_template.template.id
+    version = "$Latest"
+  }
+  tag {
+    key                 = "project"
+    propagate_at_launch = true
+    value               = "expense"
+  }
+}
+
+resource "aws_lb_target_group" "tg" {
+  name                 = "${var.component}-tg"
+  port                 = var.app_port
+  protocol             = "HTTP"
+  vpc_id               = var.vpc_id
+  deregistration_delay = 30
+
+  health_check {
+    enabled             = true
+    healthy_threshold   = 2
+    interval            = 5
+    unhealthy_threshold = 2
+    port                = var.app_port
+    path                = "/health"
+    timeout             = 3
+  }
+}
