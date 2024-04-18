@@ -20,15 +20,12 @@ resource "aws_instance" "expence" {
   }
 }
 
-#user_data                     = base64encode(templatefile("${path.module}/userdata.sh", {
-#  role_name = var.instance_name  # Passing instance name instead of type
-#}))
 
-resource "aws_route53_record" "www" {
-  count = 3
-  zone_id = var.Zone_id
-  name    = "${var.instance_name[count.index]}.roboshop.internal"
+resource "aws_route53_record" "record" {
+  count = 10
+  zone_id = var.zone_id
+  name    = "${var.instance_name[count.index]}.${var.domain}" #interpolation
   type    = "A"
-  ttl     = "1"
+  ttl     = 1
   records = [aws_instance.expence[count.index].private_ip]
 }

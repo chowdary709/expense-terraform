@@ -6,13 +6,20 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
-variable "Zone_id" {
+variable "zone_id" {
   default = "Z08360431XA1BOY4SK2N0"
 }
 
 variable "sg" {
   default = ["sg-0b792d7d432d8d378"]
 }
+
+
+variable "domain" {
+  default = "roboshop.internal"
+}
+
+
 
 
 
