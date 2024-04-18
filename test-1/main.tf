@@ -54,11 +54,15 @@ resource "aws_instance" "expence" {
     }
   }
 
-  // Attach IAM role to instances
+  // Attach IAM role to instance
   iam_instance_profile {
-    name = aws_iam_role.role.name
+    name = aws_iam_role.role[count.index].name
   }
+
+  // Declare dependency on aws_iam_role.role
+  depends_on = [aws_iam_role.role]
 }
+
 resource "aws_route53_record" "record" {
   count = 3
   zone_id = var.zone_id
