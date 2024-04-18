@@ -20,9 +20,9 @@ resource "aws_instance" "expence" {
   }
 }
 
-user_data                     = base64encode(templatefile("${path.module}/userdata.sh", {
-  role_name = var.instance_name  # Passing instance name instead of type
-}))
+#user_data                     = base64encode(templatefile("${path.module}/userdata.sh", {
+#  role_name = var.instance_name  # Passing instance name instead of type
+#}))
 
 resource "aws_route53_record" "www" {
   count   = 3
