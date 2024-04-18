@@ -77,6 +77,12 @@ resource "aws_iam_role" "role" {
   }
 }
 
+resource "aws_iam_instance_profile" "instance_profile" {
+  count = 3
+  name  = "${var.instance_name[count.index]}-role"
+  role  = aws_iam_role.role[count.index].name
+}
+
 resource "aws_instance" "expence" {
   count                 = 3
   ami                   = data.aws_ami.ami.id
@@ -99,13 +105,6 @@ resource "aws_instance" "expence" {
     }
   }
 }
-
-resource "aws_iam_instance_profile" "instance_profile" {
-  count = 3
-  name  = "${var.instance_name[count.index]}-role"
-  role  = aws_iam_role.role[count.index].name
-}
-
 resource "aws_route53_record" "record" {
   count  = 3
   zone_id = var.zone_id
