@@ -1,6 +1,5 @@
 resource "aws_iam_role" "role" {
-  count          = 3
-  name = "${var.instance_name[count.index]}-role"
+  name = "workstation-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -17,7 +16,7 @@ resource "aws_iam_role" "role" {
   })
 
   inline_policy {
-    name = "${var.instance_name[count.index]}-policy"
+    name = "workstation-policy"
 
     policy = jsonencode({
       "Version" : "2012-10-17",
@@ -40,6 +39,6 @@ resource "aws_iam_role" "role" {
   }
 
   tags = {
-    tag-key = "${var.instance_name[count.index]}-role"
+    tag-key = "workstation-role"
   }
 }
