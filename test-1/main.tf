@@ -56,7 +56,7 @@ resource "aws_instance" "expence" {
 
   // Attach IAM role to instance
   iam_instance_profile = {
-    name = aws_iam_role.role[count.index].name
+    name = aws_iam_role.role.name
   }
 
   // Declare dependency on aws_iam_role.role
