@@ -114,5 +114,3 @@ resource "aws_route53_record" "record" {
   ttl     = 1
   records = [aws_instance.expence[count.index].private_ip]
 }
-
-terraform apply -auto-approve
