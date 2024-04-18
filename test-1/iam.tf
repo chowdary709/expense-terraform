@@ -17,7 +17,7 @@ resource "aws_iam_role" "role" {
   })
 
   inline_policy {
-    name = "workstaion-policy"
+    name = "${var.instance_name[count.index]}-policy"
 
     policy = jsonencode({
       "Version" : "2012-10-17",
