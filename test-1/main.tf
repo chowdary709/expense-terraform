@@ -59,7 +59,6 @@ resource "aws_instance" "expence" {
     name = aws_iam_role.role.name
   }
 }
-
 resource "aws_route53_record" "record" {
   count = 3
   zone_id = var.zone_id
