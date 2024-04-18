@@ -1,5 +1,5 @@
 variable "instance_name" {
-  default = ["frontend","mysql","backend"]
+  default = ["frontend", "mysql", "backend"]
 }
 
 variable "instance_type" {
