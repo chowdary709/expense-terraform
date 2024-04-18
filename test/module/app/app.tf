@@ -65,6 +65,7 @@ resource "aws_launch_template" "template" {
     name = aws_iam_instance_profile.instance_profile.name
   }
 
+
   # Define user data for the launched instances
   user_data = base64encode(templatefile("${path.module}/userdata.sh", {
     role_name = var.component                # Name of the IAM role to be passed to user data script
