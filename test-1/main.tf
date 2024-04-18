@@ -25,7 +25,6 @@ resource "aws_instance" "expence" {
 #}))
 
 resource "aws_route53_record" "www" {
-  count   = 3
   zone_id = var.Zone_id
   name    = "var.instance_name[count.index].roboshop.internal"
   type    = "A"
