@@ -53,13 +53,11 @@ resource "aws_instance" "expence" {
       spot_instance_type               = "persistent"
     }
   }
-
-  resource "aws_iam_instance_profile" "instance_profile" {
-    name = "${var.instance_name[count.index]}-role"
-    role = aws_iam_role.role.name
-  }
 }
-
+resource "aws_iam_instance_profile" "instance_profile" {
+  name = "${var.instance_name[count.index]}-role"
+  role = aws_iam_role.role.name
+}
 
 resource "aws_route53_record" "record" {
   count = 3
