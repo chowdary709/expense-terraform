@@ -7,7 +7,7 @@ resource "aws_instance" "expence" {
   vpc_security_group_ids        = var.sg
 
   tags = {
-    name = var.instance_name
+    name = var.instance_name[count.index]
   }
 
   instance_market_options {
@@ -27,7 +27,7 @@ resource "aws_instance" "expence" {
 resource "aws_route53_record" "www" {
   count   = 3
   zone_id = var.Zone_id
-  name    = "aws_instance.expence[count.index].roboshop.internal"
+  name    = "var.instance_name[count.index].roboshop.internal"
   type    = "A"
   ttl     = "1"
   records = [aws_instance.expence[count.index].private_ip]
