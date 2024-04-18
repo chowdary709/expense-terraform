@@ -1,16 +1,14 @@
 resource "aws_instance" "expence" {
   count                         = 3
   ami                           = data.aws_ami.ami.id
-  instance_type                 = var.instance_name == "mysql" ? "t3.medium" : "t2.micro"
+  instance_type                 = var.instance_name[count.index] == "MySQL" ? "t3.medium" : "t2.micro"
   subnet_id                     = var.us-east-1c
-  associate_public_ip_address   = true
   vpc_security_group_ids        = var.sg
-
   tags = {
-    name = var.instance_name[count.index]
+    Name = var.instance_name[count.index]
   }
 
-  instance_market_options {
+instance_market_options {
     market_type = "spot"
     spot_options {
       max_price                        = "0"
