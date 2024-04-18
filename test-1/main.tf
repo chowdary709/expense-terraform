@@ -1,9 +1,12 @@
 resource "aws_instance" "expence" {
   count                         = 3
   ami                           = data.aws_ami.ami.id
-  instance_type                 = var.instance_name[count.index] == "MySQL" ? "t3.medium" : "t2.micro"
+instance_type = var.instance_name[count.index] == "mysql" ? "t3.medium" : "t2.micro"
   subnet_id                     = var.us-east-1c
   vpc_security_group_ids        = var.sg
+  user_data                     = base64encode(templatefile("${path.module}/userdata.sh", {
+    role_name = var.instance_name[count.index]  # Use index to get the instance name
+  }))
   tags = {
     Name = var.instance_name[count.index]
   }
