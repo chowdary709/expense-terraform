@@ -32,3 +32,7 @@ variable "default_vpc_id" {
 variable "default_vpc_cidr" {
   default = "172.31.0.0/16"
 }
+
+variable "default_route_table_id" {
+  default = "rtb-082dfe90968dbe3f0"
+}
