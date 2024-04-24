@@ -3,11 +3,11 @@ variable "cidr_block" {
 }
 
 variable "public_subnets" {
-  default = ["10.0.0.0", "10.0.0.127"]
+  default = ["10.0.0.0/25"]
 }
 
 variable "private_subnets" {
-  default = ["10.0.0.128", "10.0.0.255"]
+  default = ["10.0.0.128/25"]
 }
 
 variable "availability_zone" {
