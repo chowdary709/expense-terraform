@@ -21,3 +21,10 @@ variable "private_subnets" {
 variable "azs" {
   default = ["us-east-1a", "us-east-1b"]
 }
+
+variable "account_no" {
+  default = "666171310914"
+}
+variable "default_vpc_id" {
+  default = "vpc-0d36408476c035854"
+}
