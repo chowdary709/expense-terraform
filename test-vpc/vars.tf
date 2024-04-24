@@ -28,3 +28,7 @@ variable "account_no" {
 variable "default_vpc_id" {
   default = "vpc-0d36408476c035854"
 }
+
+variable "default_vpc_cidr" {
+  default = ""
+}
