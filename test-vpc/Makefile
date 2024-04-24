@@ -1,10 +1,11 @@
 apply:
 	rm -rf .terraform
 	terraform init
-	terraform apply
+	terraform apply -auto-approve
+
 
 destroy:
 	rm -rf .terraform
 	terraform init
-	terraform destroy
+	terraform destroy -auto-approve
 
