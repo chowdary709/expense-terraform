@@ -95,7 +95,7 @@ resource "aws_route_table" "private" {
 # default route table to new Route tables peering
 resource "aws_route" "default-route-table" {
   route_table_id            = var.default_route_table_id
-  destination_cidr_block    = var.cidr_block
+  destination_cidr_block    = var.cidr_block                          //  10.0.0.0/16
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
 }
 
