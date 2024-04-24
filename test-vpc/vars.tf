@@ -30,5 +30,5 @@ variable "default_vpc_id" {
 }
 
 variable "default_vpc_cidr" {
-  default = ""
+  default = "172.31.0.0/16"
 }
