@@ -25,7 +25,7 @@ resource "aws_subnet" "private_subnets" {
   tags = {
     Name = "private-subnet-${count.index + 1}"
   }
-#}
+}
 
 #resource "aws_subnet" "public_subnets" {
 #  count             = length(var.public_subnets)
