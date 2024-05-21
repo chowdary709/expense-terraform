@@ -12,7 +12,7 @@ resource "aws_subnet" "public_subnet" {
   availability_zone = var.azs[count.index]
 
   tags = {
-    Name = "${var.env}-public$-{count.index + 1}"
+    Name = "${var.env}-public-${count.index + 1}"
   }
 }
 
