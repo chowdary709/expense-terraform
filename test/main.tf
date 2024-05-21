@@ -37,7 +37,6 @@ module "frontend" {
   env           = var.env
   instance_type = "t2.micro"
   port          = "80"
-  protocol      = "HTTP"
   subnets       = module.vpc.private_subnet
   vpc_cidr      = var.vpc_cidr
   vpc_id        = module.vpc.vpc_id
