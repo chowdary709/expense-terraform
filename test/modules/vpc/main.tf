@@ -12,8 +12,9 @@ resource "aws_subnet" "public_subnet" {
   availability_zone = var.azs[count.index]
 
   tags = {
-    Name = "${var.env}-public-${count.index + 1}"
+    Name = "public-subnet-${count.index + 1}"
   }
+
 }
 
 resource "aws_subnet" "private_subnet" {
@@ -23,8 +24,7 @@ resource "aws_subnet" "private_subnet" {
   availability_zone = var.azs[count.index]
 
   tags = {
-    Name = "${var.env}-private-${count.index + 1}"
-  }
+    Name = "private-subnet-${count.index + 1}"  }
 }
 
 resource "aws_internet_gateway" "igw" {
