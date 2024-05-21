@@ -40,6 +40,7 @@ module "frontend" {
   subnets       = module.vpc.private_subnet
   vpc_cidr      = var.vpc_cidr
   vpc_id        = module.vpc.vpc_id
+  bastion_node_cidr = "172.31.95.190/32"
 }
 #  {
 #   app_port      = 80

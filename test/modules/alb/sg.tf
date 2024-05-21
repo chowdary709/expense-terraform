@@ -12,7 +12,6 @@ resource "aws_security_group" "sg" {
     cidr_blocks = [var.alb_sg_allow_cidr]  # Allowing HTTP access from the specified CIDR block
   }
 
-
   // Outbound rules
   egress {
     from_port   = 0
