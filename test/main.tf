@@ -1,9 +1,12 @@
-module "frontend" {
-  source        = "./module/app"
-  app_port      = 80
-  component     = "frontend"
-  instance_type = "t2.micro"
-  subnets       = ["subnet-0233174d26bc6112d"]  # Subnets should be provided as a list
-  vpc_id        = "vpc-0d36408476c035854"
-  subnet_id     = var.us-east-1c
+module "vpc" {
+  source           = "./modules/vpc"
+  account_no       = var.account_no
+  azs              = var.azs
+  default_vpc_cidr = var.default_vpc_cidr
+  default_vpc_id   = var.default_vpc_id
+  env              = var.env
+  private_subnet   = var.private_subnet
+  public_subnet    = var.public_subnet
+  route_table_id   = var.route_table_id
+  vpc_cidr         = var.vpc_cidr
 }

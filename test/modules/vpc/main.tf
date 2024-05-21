@@ -1,6 +1,3 @@
-# main.tf
-
-// Define the main VPC
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
   tags = {
@@ -8,29 +5,28 @@ resource "aws_vpc" "main" {
   }
 }
 
-// Define public subnets
-resource "aws_subnet" "public_subnets" {
-  count             = length(var.public_subnets)
+resource "aws_subnet" "public_subnet" {
+  count             = length(var.public_subnet)
   vpc_id            = aws_vpc.main.id
-  cidr_block        = var.public_subnets[count.index]
+  cidr_block        = var.public_subnet[count.index]
   availability_zone = var.azs[count.index]
+
   tags = {
-    Name = "public-subnet-${count.index + 1}"
+    Name = "${var.env}-public${count.index+1}"
   }
 }
 
-// Define private subnets
-resource "aws_subnet" "private_subnets" {
-  count             = length(var.private_subnets)
+resource "aws_subnet" "private_subnet" {
+  count             = length(var.private_subnet)
   vpc_id            = aws_vpc.main.id
-  cidr_block        = var.private_subnets[count.index]
+  cidr_block        = var.private_subnet[count.index]
   availability_zone = var.azs[count.index]
+
   tags = {
-    Name = "private-subnet-${count.index + 1}"
+    Name = "${var.env}-private${count.index+1}"
   }
 }
 
-// Define an internet gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
@@ -39,36 +35,35 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-// Define an Elastic IP for NAT Gateway
 resource "aws_eip" "eip" {
   domain = "vpc"
+
   tags = {
     Name = "${var.env}-eip"
   }
 }
 
-// Define a NAT Gateway
 resource "aws_nat_gateway" "ngw" {
   allocation_id = aws_eip.eip.id
-  subnet_id     = aws_subnet.public_subnets[0].id
+  subnet_id     = aws_subnet.public_subnet[0].id
 
   tags = {
-    Name = "${var.env}-ngw"
+    Name = "ngw"
   }
 }
 
-// Define a VPC peering connection
 resource "aws_vpc_peering_connection" "peering" {
   peer_owner_id = var.account_no
   peer_vpc_id   = var.default_vpc_id
   vpc_id        = aws_vpc.main.id
   auto_accept   = true
+
   tags = {
-    Name = "peering-from-default-vpc-to-${var.env}-vpc"
+    Name = "peering-from-default-vpc-${var.env}-vpc"
   }
 }
 
-// Define a public route table
+
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
@@ -82,7 +77,7 @@ resource "aws_route_table" "public" {
   }
 }
 
-// Define a private route table
+
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
@@ -101,23 +96,21 @@ resource "aws_route_table" "private" {
   }
 }
 
-// Define a default route
-resource "aws_route" "default-route-table" {
-  route_table_id            = var.default_route_table_id
+resource "aws_route" "route" {
+  route_table_id            = var.route_table_id
   destination_cidr_block    = var.vpc_cidr
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
 }
 
-// Associate public subnets with the public route table
 resource "aws_route_table_association" "public" {
-  count          = length(var.public_subnets)
-  subnet_id      = aws_subnet.public_subnets[count.index].id
+  count          = length(var.public_subnet)
+  subnet_id      = aws_subnet.public_subnet[count.index].id
   route_table_id = aws_route_table.public.id
 }
 
-// Associate private subnets with the private route table
+
 resource "aws_route_table_association" "private" {
-  count          = length(var.private_subnets)
-  subnet_id      = aws_subnet.private_subnets[count.index].id
+  count          = length(var.private_subnet)
+  subnet_id      = aws_subnet.private_subnet[count.index].id
   route_table_id = aws_route_table.private.id
 }
