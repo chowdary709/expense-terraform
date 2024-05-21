@@ -10,3 +10,43 @@ module "vpc" {
   route_table_id   = var.route_table_id
   vpc_cidr         = var.vpc_cidr
 }
+
+module "public-lb" {
+  source            = "./modules/alb"
+  alb_sg_allow_cidr = "0.0.0.0/0"
+  alb_type          = "public"
+  env               = var.env
+  internal          = false
+  subnets           = module.vpc.public_subnet
+  vpc_id            = module.vpc.vpc_id
+}
+
+module "private-lb" {
+  source            = "./modules/alb"
+  alb_sg_allow_cidr = "0.0.0.0/0"
+  alb_type          = "private"
+  env               = var.env
+  internal          = false
+  subnets           = module.vpc.private_subnet
+  vpc_id            = module.vpc.vpc_id
+}
+module "frontend" {
+  source        = "./modules/app"
+  component     = "frontend"
+  env           = var.env
+  instance_type = "t2.micro"
+  port          = "80"
+  protocol      = "HTTP"
+  subnets       = module.vpc.private_subnet
+  vpc_cidr      = var.vpc_cidr
+  vpc_id        = module.vpc.vpc_id
+}
+ {
+  app_port      = 80
+  component     = "frontend"
+  env           = var.env
+  instance_type = "t3.micro"
+  vpc_cidr      = var.vpc_cidr
+  vpc_id        = module.vpc.vpc_id
+  subnets       = module.vpc.private_subnets
+}
