@@ -16,10 +16,8 @@ resource "aws_security_group" "sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.bastion_node_cidr
+    cidr_blocks = [var.bastion_node_cidr]
   }
-
-
 
   // Outbound rules
   egress {
