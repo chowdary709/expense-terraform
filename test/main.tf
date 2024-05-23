@@ -11,25 +11,25 @@ module "vpc" {
   vpc_cidr         = var.vpc_cidr
 }
 
-module "public-lb" {
-  source            = "./modules/alb"
-  alb_sg_allow_cidr = "0.0.0.0/0"
-  alb_type          = "public"
-  env               = var.env
-  internal          = false
-  subnets           = module.vpc.public_subnet
-  vpc_id            = module.vpc.vpc_id
-}
-
-module "private-lb" {
-  source            = "./modules/alb"
-  alb_sg_allow_cidr = "0.0.0.0/0"
-  alb_type          = "private"
-  env               = var.env
-  internal          = false
-  subnets           = module.vpc.private_subnet
-  vpc_id            = module.vpc.vpc_id
-}
+# module "public-lb" {
+#   source            = "./modules/alb"
+#   alb_sg_allow_cidr = "0.0.0.0/0"
+#   alb_type          = "public"
+#   env               = var.env
+#   internal          = false
+#   subnets           = module.vpc.public_subnet
+#   vpc_id            = module.vpc.vpc_id
+# }
+#
+# module "private-lb" {
+#   source            = "./modules/alb"
+#   alb_sg_allow_cidr = "0.0.0.0/0"
+#   alb_type          = "private"
+#   env               = var.env
+#   internal          = false
+#   subnets           = module.vpc.private_subnet
+#   vpc_id            = module.vpc.vpc_id
+# }
 
 module "frontend" {
   source        = "./modules/app"
