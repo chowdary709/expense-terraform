@@ -16,7 +16,7 @@ resource "aws_iam_role" "role" {
   })
 
   inline_policy {
-    name = "${var.env}-${var.component}-policy"
+    name = "iam-dev-policy"
 
     policy = jsonencode({
       "Version": "2012-10-17",
