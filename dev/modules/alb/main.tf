@@ -48,6 +48,8 @@ resource "aws_route53_record" "www" {
   type    = "CNAME"
   ttl     = 300
   records = [aws_lb.alb.dns_name]
+
+  depends_on = [aws_lb.alb]
 }
 
 resource "aws_lb_listener" "listener-http" {
