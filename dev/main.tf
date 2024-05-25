@@ -19,7 +19,7 @@ module "public-lb" {
   internal          = false
   subnets           = module.vpc.public_subnets
   vpc_id            = module.vpc.vpc_id
-  dns_name          = "${var.env}.roboshop.internal"
+  dns_name          = "frontend-${var.env}.roboshop.internal"
   zone_id           = "Z08360431XA1BOY4SK2N0"
   tg_arn            = module.frontend.tg_arn
 }
