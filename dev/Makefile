@@ -1,4 +1,5 @@
 dev:
+	git pull
 	rm -rf .terraform
 	terraform init
 	terraform apply -auto-approve -var-file=env-dev/inputs.tfvars
