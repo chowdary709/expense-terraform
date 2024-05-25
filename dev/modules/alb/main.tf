@@ -31,6 +31,7 @@ resource "aws_security_group" "security_group" {
   }
 }
 
+
 resource "aws_lb" "alb" {
   name               = "${var.env}-${var.alb_type}"
   internal           = var.internal
@@ -42,17 +43,9 @@ resource "aws_lb" "alb" {
   }
 }
 
-resource "aws_route53_record" "www" {
-  zone_id = var.zone_id
-  name    = var.dns_name
-  type    = "CNAME"
-  ttl     = 300
-  records = [aws_lb.alb.dns_name]
 
-  depends_on = [aws_lb.alb]
-}
-
-resource "aws_lb_listener" "listener-http" {
+resource "aws_lb_listener" "http" {
+  depends_on        = [aws_lb.alb]
   load_balancer_arn = aws_lb.alb.arn
   port              = "80"
   protocol          = "HTTP"
@@ -62,6 +55,18 @@ resource "aws_lb_listener" "listener-http" {
     target_group_arn = var.tg_arn
   }
 }
+
+resource "aws_route53_record" "www" {
+  depends_on = [aws_lb.alb]
+  zone_id    = var.zone_id
+  name       = var.dns_name
+  type       = "CNAME"
+  ttl        = 30
+  records    = [aws_lb.alb.dns_name]
+
+}
+
+
 #
 # resource "aws_lb_listener" "listener-https" {
 #   count             = var.alb_type == "public" ? 1 : 0
@@ -79,5 +84,4 @@ resource "aws_lb_listener" "listener-http" {
 # }
 #
 #
-
 
