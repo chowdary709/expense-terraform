@@ -20,7 +20,7 @@ module "public-lb" {
   subnets           = module.vpc.public_subnets
   vpc_id            = module.vpc.vpc_id
   dns_name          = "${var.env}.chowdary.cloud"
-  zone_id           = "Z08360431XA1BOY4SK2N0"
+  zone_id           = "Z0013695SMHQDK42GJB1"
   tg_arn            = module.frontend.tg_arn
 }
 
