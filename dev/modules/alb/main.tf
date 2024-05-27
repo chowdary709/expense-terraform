@@ -49,7 +49,7 @@ resource "aws_route53_record" "www" {
   name       = var.dns_name
   type       = "CNAME"
   ttl        = 30
-  records    = [aws_lb.alb.arn]
+  records    = [aws_lb.alb.dns_name]
 }
 
 resource "aws_lb_listener" "http" {
