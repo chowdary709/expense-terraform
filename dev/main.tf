@@ -19,7 +19,7 @@ module "public-lb" {
   internal          = false
   subnets           = module.vpc.public_subnets
   vpc_id            = module.vpc.vpc_id
-  dns_name          = "dev-${var.env}.chowdary.cloud"
+  dns_name          = "${var.env}.chowdary.cloud"
   zone_id           = "Z08360431XA1BOY4SK2N0"
   tg_arn            = module.frontend.tg_arn
 }
@@ -71,7 +71,6 @@ module "backend" {
 #
 module "mysql" {
   source = "./modules/rds"
-
   component      = "mysql"
   env            = var.env
   subnets        = module.vpc.private_subnets
