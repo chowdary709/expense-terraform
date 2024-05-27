@@ -43,6 +43,14 @@ resource "aws_lb" "alb" {
   }
 }
 
+resource "aws_route53_record" "www" {
+  depends_on = [aws_lb.alb]
+  zone_id    = var.zone_id
+  name       = var.dns_name
+  type       = "CNAME"
+  ttl        = 30
+  records    = [aws_lb.alb.arn]
+}
 
 resource "aws_lb_listener" "http" {
   depends_on        = [aws_lb.alb]
@@ -55,16 +63,6 @@ resource "aws_lb_listener" "http" {
     target_group_arn = var.tg_arn
   }
 }
-
-resource "aws_route53_record" "www" {
-  depends_on = [aws_lb.alb]
-  zone_id    = var.zone_id
-  name       = var.dns_name
-  type       = "CNAME"
-  ttl        = 30
-  records    = [aws_lb.alb.dns_name]
-}
-
 
 #
 # resource "aws_lb_listener" "listener-https" {
@@ -84,3 +82,19 @@ resource "aws_route53_record" "www" {
 #
 #
 
+# resource "aws_lb_listener" "http" {
+#   load_balancer_arn = aws_lb.alb.arn
+#   port              = "80"
+#   protocol          = "HTTP"
+#
+#   default_action {
+#     type             = "fixed-response"
+#     target_group_arn = var.tg_arn
+#
+#     fixed_response {
+#       content_type = "text/plain"
+#       message_body = "Hi, This response is from APP ALB"
+#       status_code  = "200"
+#     }
+#   }
+# }
