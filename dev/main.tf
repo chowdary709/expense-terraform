@@ -10,19 +10,19 @@ module "vpc" {
   default_vpc_cidr       = var.default_vpc_cidr
   default_route_table_id = var.default_route_table_id
 }
-
-module "public-lb" {
-  source            = "./modules/alb"
-  alb_sg_allow_cidr = "0.0.0.0/0"
-  alb_type          = "public"
-  env               = var.env
-  internal          = false
-  subnets           = module.vpc.public_subnets
-  vpc_id            = module.vpc.vpc_id
-  dns_name          = "${var.env}.roboshop.internal"
-  zone_id           = "Z08360431XA1BOY4SK2N0"
-  tg_arn            = module.frontend.tg_arn
-}
+#
+# module "public-lb" {
+#   source            = "./modules/alb"
+#   alb_sg_allow_cidr = "0.0.0.0/0"
+#   alb_type          = "public"
+#   env               = var.env
+#   internal          = false
+#   subnets           = module.vpc.public_subnets
+#   vpc_id            = module.vpc.vpc_id
+#   dns_name          = "frontend-${var.env}.chowdary.cloud"
+#   zone_id           = "Z08360431XA1BOY4SK2N0"
+#   tg_arn            = module.frontend.tg_arn
+# }
 
 module "private-lb" {
   source            = "./modules/alb"
@@ -32,8 +32,8 @@ module "private-lb" {
   internal          = true
   subnets           = module.vpc.private_subnets
   vpc_id            = module.vpc.vpc_id
-  dns_name          = "backend-${var.env}.roboshop.internal"
-  zone_id           = "Z08360431XA1BOY4SK2N0"
+  dns_name          = "backend-${var.env}.chowdary.cloud"
+  zone_id           = "Z0013695SMHQDK42GJB1"
   tg_arn            = module.backend.tg_arn
 }
 # Z08360431XA1BOY4SK2N0
@@ -68,15 +68,15 @@ module "backend" {
   max_size          = var.max_size
   min_size          = var.min_size
 }
-
-module "mysql" {
-  source = "./modules/rds"
-
-  component      = "mysql"
-  env            = var.env
-  subnets        = module.vpc.private_subnets
-  vpc_cidr       = var.vpc_cidr
-  vpc_id         = module.vpc.vpc_id
-  instance_class = var.instance_class
-}
+#
+# module "mysql" {
+#   source = "./modules/rds"
+#
+#   component      = "mysql"
+#   env            = var.env
+#   subnets        = module.vpc.private_subnets
+#   vpc_cidr       = var.vpc_cidr
+#   vpc_id         = module.vpc.vpc_id
+#   instance_class = var.instance_class
+# }
 
