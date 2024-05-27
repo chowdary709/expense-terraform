@@ -11,18 +11,18 @@ module "vpc" {
   default_route_table_id = var.default_route_table_id
 }
 #
-# module "public-lb" {
-#   source            = "./modules/alb"
-#   alb_sg_allow_cidr = "0.0.0.0/0"
-#   alb_type          = "public"
-#   env               = var.env
-#   internal          = false
-#   subnets           = module.vpc.public_subnets
-#   vpc_id            = module.vpc.vpc_id
-#   dns_name          = "frontend-${var.env}.chowdary.cloud"
-#   zone_id           = "Z08360431XA1BOY4SK2N0"
-#   tg_arn            = module.frontend.tg_arn
-# }
+module "public-lb" {
+  source            = "./modules/alb"
+  alb_sg_allow_cidr = "0.0.0.0/0"
+  alb_type          = "public"
+  env               = var.env
+  internal          = false
+  subnets           = module.vpc.public_subnets
+  vpc_id            = module.vpc.vpc_id
+  dns_name          = "dev-${var.env}.chowdary.cloud"
+  zone_id           = "Z08360431XA1BOY4SK2N0"
+  tg_arn            = module.frontend.tg_arn
+}
 
 module "private-lb" {
   source            = "./modules/alb"
@@ -54,7 +54,7 @@ module "frontend" {
 
 
 module "backend" {
-#   depends_on        = [module.mysql]
+  depends_on        = [module.mysql]
   source            = "./modules/app"
   app_port          = 8080
   component         = "backend"
@@ -69,14 +69,14 @@ module "backend" {
   min_size          = var.min_size
 }
 #
-# module "mysql" {
-#   source = "./modules/rds"
-#
-#   component      = "mysql"
-#   env            = var.env
-#   subnets        = module.vpc.private_subnets
-#   vpc_cidr       = var.vpc_cidr
-#   vpc_id         = module.vpc.vpc_id
-#   instance_class = var.instance_class
-# }
+module "mysql" {
+  source = "./modules/rds"
+
+  component      = "mysql"
+  env            = var.env
+  subnets        = module.vpc.private_subnets
+  vpc_cidr       = var.vpc_cidr
+  vpc_id         = module.vpc.vpc_id
+  instance_class = var.instance_class
+}
 
