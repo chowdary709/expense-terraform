@@ -63,7 +63,6 @@ resource "aws_route53_record" "www" {
   type       = "CNAME"
   ttl        = 30
   records    = [aws_lb.alb.dns_name]
-
 }
 
 
