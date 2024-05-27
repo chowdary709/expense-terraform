@@ -52,6 +52,7 @@ resource "aws_route53_record" "www" {
   records    = [aws_lb.alb.dns_name]
 }
 
+
 resource "aws_lb_listener" "http" {
   depends_on        = [aws_lb.alb]
   load_balancer_arn = aws_lb.alb.arn
