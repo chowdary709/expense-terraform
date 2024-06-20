@@ -6,9 +6,9 @@ variable "vpc_cidr" {
 variable "common_tags" {
   type = map(string)
   default = {
-    project     = "roboshop"
+#     project     = "roboshop"
     terraform   = "true"
-    environment = "dev"
+#     environment = "dev"
   }
 }
 variable "vpc_tags" {
