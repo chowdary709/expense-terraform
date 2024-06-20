@@ -4,5 +4,5 @@ module "vpc" {
   env          = var.env
   project_name = var.project_name
   vpc_cidr     = var.vpc_cidr
-  vpc_tags     = var.vpc_tags
+  vpc_tags     = var.
 }

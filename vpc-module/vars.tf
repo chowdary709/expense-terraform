@@ -12,10 +12,13 @@ variable "common_tags" {
   }
 }
 variable "vpc_tags" {
-  type        = map(string)
-  project     = "roboshop"
-  environment = "dev"
+  type = map(string)
+  default = {
+    project     = "roboshop"
+    environment = "dev"
+  }
 }
+
 
 variable "project_name" {
   default = "roboshop"
