@@ -14,7 +14,7 @@ variable "common_tags" {
 variable "vpc_tags" {
   type = map(string)
   default = {
-    project     = "roboshop"
+    project     = "hari"
     environment = "prasad"
   }
 }
