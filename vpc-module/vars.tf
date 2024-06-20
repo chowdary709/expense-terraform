@@ -14,15 +14,19 @@ variable "common_tags" {
 variable "vpc_tags" {
   type = map(string)
   default = {
-    project     = "hari"
-    environment = "prasad"
+    project     = "roboshop"
+    environment = "dev"
   }
 }
-
 
 variable "project_name" {
   default = "roboshop"
 }
 variable "env" {
   default = "dev"
+}
+
+variable "igw_tags" {
+  type = map
+  default = {}
 }

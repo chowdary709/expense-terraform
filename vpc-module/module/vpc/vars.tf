@@ -3,3 +3,4 @@ variable "common_tags" {}
 variable "vpc_tags" {}
 variable "project_name" {}
 variable "env" {}
+variable "igw_tags" {}
