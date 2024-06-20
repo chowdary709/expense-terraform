@@ -4,3 +4,6 @@ terraform = true
 environment = dev
 name = "Roboshop"
 
+slice function
+merge function
+validation

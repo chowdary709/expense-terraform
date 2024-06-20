@@ -39,6 +39,9 @@ variable "public_subnet_cidr" {
     error_message = "please provide exactly 2 valid  subnet CIDRs"
   }
 }
+variable "public_subnet_tags" {
+  default = {}
+}
 
 variable "private_subnet_cidr" {
   type = list(string)
@@ -49,10 +52,19 @@ variable "private_subnet_cidr" {
   }
 }
 
-variable "public_subnet_tags" {
+variable "private_subnet_tags" {
   default = {}
 }
 
-variable "private_subnet_tags" {
+variable "database_subnet_cidr" {
+  type = list(string)
+  default = ["10.0.20.0/24", "10.0.21.0/24"]
+  validation {
+    condition     = length(var.database_subnet_cidr) == 2
+    error_message = "please provide exactly 2 valid  subnet CIDRs"
+  }
+}
+
+variable "database_subnet_tags" {
   default = {}
 }
