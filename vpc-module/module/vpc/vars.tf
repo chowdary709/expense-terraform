@@ -10,3 +10,7 @@ variable "private_subnet_cidr" {}
 variable "private_subnet_tags" {}
 variable "database_subnet_cidr" {}
 variable "database_subnet_tags" {}
+variable "ngw_tags" {}
+variable "public_route_table_tags" {}
+variable "private_route_table_tags" {}
+variable "database_route_table_tags" {}

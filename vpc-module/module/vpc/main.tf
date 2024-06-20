@@ -65,3 +65,57 @@ resource "aws_subnet" "database" {
     }
   )
 }
+
+resource "aws_eip" "eip" {
+  domain = "vpc"
+}
+
+resource "aws_nat_gateway" "ngw" {
+  allocation_id = aws_eip.eip.id
+  subnet_id     = aws_subnet.public[0].id
+ 
+  tags = merge(
+    var.common_tags,
+    var.ngw_tags,
+    {
+      Name = "${local.Name}"
+    }
+  )
+}
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(
+    var.common_tags,
+    var.public_route_table_tags,
+    {
+      Name = "${local.Name}-public"
+    }
+  )
+}
+
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(
+    var.common_tags,
+    var.private_route_table_tags,
+    {
+      Name = "${local.Name}-private"
+    }
+  )
+}
+
+
+resource "aws_route_table" "database" {
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(
+    var.common_tags,
+    var.database_route_table_tags,
+    {
+      Name = "${local.Name}-database"
+    }
+  )
+}

@@ -68,3 +68,16 @@ variable "database_subnet_cidr" {
 variable "database_subnet_tags" {
   default = {}
 }
+
+variable "ngw_tags" {
+  default = {}
+}
+variable "public_route_table_tags" {
+  default = {}
+}
+variable "private_route_table_tags" {
+  default = {}
+}
+variable "database_route_table_tags" {
+  default = {}
+}
