@@ -5,4 +5,5 @@ module "vpc" {
   project_name = var.project_name
   vpc_cidr     = var.vpc_cidr
   vpc_tags     = var.vpc_tags
+  igw_tags     = var.igw_tags
 }
