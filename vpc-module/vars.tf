@@ -48,3 +48,7 @@ variable "private_subnet_cidr" {
     error_message = "please provide exactly 2 valid  subnet CIDRs"
   }
 }
+
+variable "public_subnet_tags" {
+  default = {}
+}

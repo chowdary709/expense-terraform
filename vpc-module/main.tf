@@ -6,4 +6,6 @@ module "vpc" {
   vpc_cidr     = var.vpc_cidr
   vpc_tags     = var.vpc_tags
   igw_tags     = var.igw_tags
+  public_subnet_cidr = var.public_subnet_cidr
+  public_subnet_tags = var.public_subnet_tags
 }
