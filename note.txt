@@ -1,0 +1,6 @@
+common tags
+project = roboshop
+terraform = true
+environment = dev
+name = "Roboshop"
+
