@@ -6,3 +6,5 @@ variable "env" {}
 variable "igw_tags" {}
 variable "public_subnet_cidr" {}
 variable "public_subnet_tags" {}
+variable "private_subnet_cidr" {}
+variable "private_subnet_tags" {}

@@ -52,3 +52,7 @@ variable "private_subnet_cidr" {
 variable "public_subnet_tags" {
   default = {}
 }
+
+variable "private_subnet_tags" {
+  default = {}
+}
