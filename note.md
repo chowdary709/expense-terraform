@@ -13,3 +13,7 @@ resource "aws_route_table_association" "public" {
     
      element retrieves a single element from a list.
 ```
+```bash
+terraform init -backend-config="env-dev/state.tfvats"
+terraform apply -var-file="env-dev/terraform.tfvars"
+```
