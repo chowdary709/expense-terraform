@@ -15,5 +15,6 @@ resource "aws_route_table_association" "public" {
 ```
 ```bash
 terraform init -backend-config="env-dev/state.tfvats"
-terraform apply -var-file="env-dev/terraform.tfvars"
+terraform apply -auto-approve -var-file="env-dev/terraform.tfvars"
+terraform destroy -auto-approve -var-file="env-dev/terraform.tfvars"
 ```
