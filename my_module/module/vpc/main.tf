@@ -1,5 +1,6 @@
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
+
   tags = {
     Name = "${var.env}-vpc"
   }
@@ -83,6 +84,7 @@ resource "aws_route_table" "public" {
   }
 }
 
+
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
@@ -139,4 +141,37 @@ resource "aws_route_table_association" "database" {
   count = length(var.database_subnets)
   subnet_id = aws_subnet.database_subnets[count.index].id
   route_table_id = aws_route_table.database.id
+}
+
+resource "aws_security_group" "sg" {
+  name        = "web_sg"
+  description = "Allow web traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description = "HTTP from VPC"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "SSH from VPC"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    description      = "All outbound traffic"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "web_sg"
+  }
 }
