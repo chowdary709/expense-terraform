@@ -36,3 +36,77 @@ resource "aws_subnet" "database" {
     Name = "database-subnet-${count.index + 1}"
   }
 }
+
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "${var.env}-igw"
+  }
+}
+
+# resource "aws_eip" "eip" {
+#   domain   = "vpc"
+#   tags = {
+#     Name = "${var.env}-eip"
+#   }
+# }
+#
+# resource "aws_nat_gateway" "ngw" {
+#   allocation_id = aws_eip.eip.id
+#   subnet_id     = aws_subnet.public_subnets.id
+#
+#   tags = {
+#     Name = "${var.env}-ngw"
+#   }
+# }
+
+resource "aws_vpc_peering_connection" "peering_connection" {
+  peer_vpc_id = data.aws_vpc.default.id
+  vpc_id      = aws_vpc.main.id
+  auto_accept = true
+}
+
+# resource "aws_route_table" "public" {
+#   vpc_id = aws_vpc.main.id
+#
+#   route {
+#     cidr_block = "0.0.0.0/0"
+#     gateway_id = aws_internet_gateway.igw.id
+#   }
+#
+#   tags = {
+#     Name = "${var.env}-public-route-table"
+#   }
+# }
+#
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+
+#   route {
+#     cidr_block = "0.0.0.0/0"
+#     nat_gateway_id = aws_nat_gateway.ngw.id
+#   }
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    vpc_peering_connection_id = aws_vpc_peering_connection.peering_connection.id
+  }
+
+  tags = {
+    Name = "${var.env}-private-route-table"
+  }
+}
+#
+# resource "aws_route_table" "database" {
+#   vpc_id = aws_vpc.main.id
+#
+#   route {
+#     cidr_block = "0.0.0.0/0"
+#     nat_gateway_id = aws_nat_gateway.ngw.id
+#   }
+#
+#   tags = {
+#     Name = "${var.env}-database-route-table"
+#   }
+# }
