@@ -45,22 +45,22 @@ resource "aws_internet_gateway" "igw" {
     Name = "${var.env}-igw"
   }
 }
+#
+# resource "aws_eip" "eip" {
+#   domain   = "vpc"
+#   tags = {
+#     Name = "${var.env}-eip"
+#   }
+# }
 
-resource "aws_eip" "eip" {
-  domain   = "vpc"
-  tags = {
-    Name = "${var.env}-eip"
-  }
-}
-
-resource "aws_nat_gateway" "ngw" {
-  allocation_id = aws_eip.eip.id
-  subnet_id     = aws_subnet.public_subnets[0].id
-
-  tags = {
-    Name = "${var.env}-ngw"
-  }
-}
+# resource "aws_nat_gateway" "ngw" {
+#   allocation_id = aws_eip.eip.id
+#   subnet_id     = aws_subnet.public_subnets[0].id
+#
+#   tags = {
+#     Name = "${var.env}-ngw"
+#   }
+# }
 
 resource "aws_vpc_peering_connection" "peering_connection" {
   peer_vpc_id = data.aws_vpc.default.id
@@ -88,10 +88,10 @@ resource "aws_route_table" "public" {
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
-    route {
-      cidr_block = "0.0.0.0/0"
-      nat_gateway_id = aws_nat_gateway.ngw.id
-    }
+#     route {
+#       cidr_block = "0.0.0.0/0"
+#       nat_gateway_id = aws_nat_gateway.ngw.id
+#     }
 
   route {
     cidr_block                = data.aws_vpc.default.cidr_block
@@ -106,14 +106,16 @@ resource "aws_route_table" "private" {
 resource "aws_route_table" "database" {
   vpc_id = aws_vpc.main.id
 
-    route {
-      cidr_block = "0.0.0.0/0"
-      nat_gateway_id = aws_nat_gateway.ngw.id
-    }
+#     route {
+#       cidr_block = "0.0.0.0/0"
+#       nat_gateway_id = aws_nat_gateway.ngw.id
+#     }
+
   route {
     cidr_block                = data.aws_vpc.default.cidr_block
     vpc_peering_connection_id = aws_vpc_peering_connection.peering_connection.id
   }
+
   tags = {
     Name = "${var.env}-database-route-table"
   }
@@ -137,6 +139,7 @@ resource "aws_route_table_association" "private" {
   subnet_id      = aws_subnet.private_subnets[count.index].id
   route_table_id = aws_route_table.private.id
 }
+
 resource "aws_route_table_association" "database" {
   count = length(var.database_subnets)
   subnet_id = aws_subnet.database_subnets[count.index].id
