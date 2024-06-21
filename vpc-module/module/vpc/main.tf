@@ -9,6 +9,7 @@ resource "aws_vpc" "main" {
     }
   )
 }
+
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
@@ -65,7 +66,7 @@ resource "aws_subnet" "database" {
     }
   )
 }
-#
+
 # resource "aws_eip" "eip" {
 #   domain = "vpc"
 # }
@@ -78,13 +79,14 @@ resource "aws_subnet" "database" {
 #     var.common_tags,
 #     var.ngw_tags,
 #     {
-#       Name = "${local.Name}"
+#       Name = "${local.Name}-ngw"
 #     }
 #   )
 # }
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
+
 
   tags = merge(
     var.common_tags,
@@ -111,6 +113,7 @@ resource "aws_route_table" "private" {
 resource "aws_route_table" "database" {
   vpc_id = aws_vpc.main.id
 
+
   tags = merge(
     var.common_tags,
     var.database_route_table_tags,
@@ -119,3 +122,56 @@ resource "aws_route_table" "database" {
     }
   )
 }
+
+resource "aws_route" "public" {
+  route_table_id         = aws_route_table.public.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.igw.id
+}
+#
+# resource "aws_route" "private" {
+#   route_table_id         = aws_route_table.private.id
+#   destination_cidr_block = "0.0.0.0/0"
+#   nat_gateway_id         = aws_nat_gateway.ngw.id
+# }
+#
+# resource "aws_route" "database" {
+#   route_table_id         = aws_route_table.database.id
+#   destination_cidr_block = "0.0.0.0/0"
+#   nat_gateway_id         = aws_nat_gateway.ngw.id
+# }
+
+
+resource "aws_route_table_association" "public" {
+  count                  = length(var.public_subnet_cidr)  // ["10.0.0.0/24", "10.0.1.0/24"]
+  subnet_id              = element(aws_subnet.public[*].id, count.index)
+  route_table_id         = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "private" {
+  count                  = length(var.private_subnet_cidr)
+  subnet_id              = element(aws_subnet.private[*].id, count.index)
+  route_table_id         = aws_route_table.private.id
+}
+
+resource "aws_route_table_association" "database" {
+  count                  = length(var.database_subnet_cidr)
+  subnet_id              = element(aws_subnet.database[*].id, count.index)
+  route_table_id         = aws_route_table.database.id
+}
+
+resource "aws_vpc_peering_connection" "peering_connection" {
+  count = var.is_peering_required ? 1 : 0
+  vpc_id      = aws_vpc.main.id
+  peer_vpc_id = var.acceptor_vpc_id == "" ? data.aws_vpc.default.id : var.acceptor_vpc_id
+  auto_accept = var.acceptor_vpc_id == "" ? true : false
+
+  tags = merge(
+    var.common_tags
+    var.vpc_peering_tags
+    {
+      Name = "peering-from-default-vpc-to-${local.Name}"
+    }
+  )
+}
+

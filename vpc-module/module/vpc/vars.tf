@@ -14,3 +14,6 @@ variable "ngw_tags" {}
 variable "public_route_table_tags" {}
 variable "private_route_table_tags" {}
 variable "database_route_table_tags" {}
+variable "is_peering_required" {}
+variable "acceptor_vpc_id" {}
+variable "vpc_peering_tags" {}
