@@ -65,21 +65,24 @@ resource "aws_vpc_peering_connection" "peering_connection" {
   peer_vpc_id = data.aws_vpc.default.id
   vpc_id      = aws_vpc.main.id
   auto_accept = true
+  tags = {
+    Name = "peering-from default-vpc-to-${var.env}-vpc"
+  }
 }
 
-# resource "aws_route_table" "public" {
-#   vpc_id = aws_vpc.main.id
-#
-#   route {
-#     cidr_block = "0.0.0.0/0"
-#     gateway_id = aws_internet_gateway.igw.id
-#   }
-#
-#   tags = {
-#     Name = "${var.env}-public-route-table"
-#   }
-# }
-#
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+  tags = {
+    Name = "${var.env}-public-route-table"
+  }
+}
+
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
@@ -89,7 +92,7 @@ resource "aws_route_table" "private" {
 #   }
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block = data.aws_vpc.default.cidr_block
     vpc_peering_connection_id = aws_vpc_peering_connection.peering_connection.id
   }
 
@@ -97,16 +100,19 @@ resource "aws_route_table" "private" {
     Name = "${var.env}-private-route-table"
   }
 }
-#
-# resource "aws_route_table" "database" {
-#   vpc_id = aws_vpc.main.id
-#
+
+resource "aws_route_table" "database" {
+  vpc_id = aws_vpc.main.id
+
 #   route {
 #     cidr_block = "0.0.0.0/0"
 #     nat_gateway_id = aws_nat_gateway.ngw.id
 #   }
-#
-#   tags = {
-#     Name = "${var.env}-database-route-table"
-#   }
-# }
+  route {
+    cidr_block = data.aws_vpc.default.cidr_block
+    vpc_peering_connection_id = aws_vpc_peering_connection.peering_connection.id
+  }
+  tags = {
+    Name = "${var.env}-database-route-table"
+  }
+}
