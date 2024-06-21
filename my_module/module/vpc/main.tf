@@ -14,3 +14,25 @@ resource "aws_subnet" "public_subnets" {
     Name = "public-subnets-${count.index + 1}"
   }
 }
+
+resource "aws_subnet" "private" {
+  count             = length(var.private_subnets)
+  vpc_id            = aws_vpc.main.id
+  availability_zone = var.azs[count.index]
+  cidr_block        = var.private_subnets[count.index]
+
+  tags = {
+    Name = "private-subnets-${count.index + 1}"
+  }
+}
+
+resource "aws_subnet" "database" {
+  count             = length(var.database_subnets)
+  vpc_id            = aws_vpc.main.id
+  availability_zone = var.azs[count.index]
+  cidr_block        = var.database_subnets[count.index]
+
+  tags = {
+    Name = "database-subnet-${count.index + 1}"
+  }
+}
