@@ -24,18 +24,18 @@ module "public-lb" {
   tg_arn            = module.frontend.tg_arn
 }
 
-# module "private-lb" {
-#   source            = "./modules/alb"
-#   alb_sg_allow_cidr = var.vpc_cidr
-#   alb_type          = "private"
-#   env               = var.env
-#   internal          = true
-#   subnets           = module.vpc.private_subnets
-#   vpc_id            = module.vpc.vpc_id
-#   dns_name          = "backend-${var.env}.chowdary.cloud"
-#   zone_id           = "Z0013695SMHQDK42GJB1"
-#   tg_arn            = module.backend.tg_arn
-# }
+module "private-lb" {
+  source            = "./modules/alb"
+  alb_sg_allow_cidr = var.vpc_cidr
+  alb_type          = "private"
+  env               = var.env
+  internal          = true
+  subnets           = module.vpc.private_subnets
+  vpc_id            = module.vpc.vpc_id
+  dns_name          = "backend-${var.env}.chowdary.cloud"
+  zone_id           = "Z0013695SMHQDK42GJB1"
+  tg_arn            = module.backend.tg_arn
+}
 # Z08360431XA1BOY4SK2N0
 module "frontend" {
   source            = "./modules/app"
