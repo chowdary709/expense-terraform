@@ -33,22 +33,22 @@ resource "aws_internet_gateway" "igw" {
     Name = "${var.env}-igw"
   }
 }
-
-resource "aws_eip" "ngw" {
-  domain = "vpc"
-  tags = {
-    Name = "${var.env}-ngw"
-  }
-}
-
-resource "aws_nat_gateway" "ngw" {
-  allocation_id = aws_eip.ngw.id
-  subnet_id     = aws_subnet.public_subnets[0].id
-
-  tags = {
-    Name = "${var.env}-ngw"
-  }
-}
+#
+# resource "aws_eip" "ngw" {
+#   domain = "vpc"
+#   tags = {
+#     Name = "${var.env}-ngw"
+#   }
+# }
+#
+# resource "aws_nat_gateway" "ngw" {
+#   allocation_id = aws_eip.ngw.id
+#   subnet_id     = aws_subnet.public_subnets[0].id
+#
+#   tags = {
+#     Name = "${var.env}-ngw"
+#   }
+# }
 
 resource "aws_vpc_peering_connection" "peering" {
   peer_owner_id = var.account_no
@@ -76,10 +76,10 @@ resource "aws_route_table" "public" {
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.ngw.id
-  }
+#   route {
+#     cidr_block     = "0.0.0.0/0"
+#     nat_gateway_id = aws_nat_gateway.ngw.id
+#   }
 
   route {
     cidr_block                = var.default_vpc_cidr
