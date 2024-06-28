@@ -19,6 +19,9 @@ pipeline {
         }
 
         stage('Terraform Action') {
+            input {
+                message "should be continue"
+            }
             steps {
                 sh 'terraform ${ACTION} -var-file=env-${ENV}/inputs.tfvars -auto-approve'
             }
